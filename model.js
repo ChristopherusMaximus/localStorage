@@ -1,25 +1,30 @@
+import { Person } from './person.js';
 import { DAO } from './dao.js';
-import { Person } from './person.js'
 
 export class Model {
   constructor() {
     this.dao = new DAO();
-    this.personArray = this.dao.load();
+    this.personen = this.dao.readPersons();
   }
 
-  //    Create
-  addPerson(person){
-      this.personArray.push(person);
-      this.dao.save(this.personArray);
+  //      Create
+  createPerson(person) {
+    this.personen.push(person);
+    this.dao.safePerson(this.person);
   }
 
-  //    Read 
-  getData() {
-      return this.personArray;
+  //      Read  
+  readAllPersons() {
+    return this.personen;
   }
 
-  //    Update
+  //      Update
 
-  //    Delete
+  //      Delete
+  deletePerson(index){
+    this.personen.splice(index,1);
+    this.dao.safePerson(this.personen);
+  }
 
+  
 }

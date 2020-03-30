@@ -1,17 +1,18 @@
 export class DAO {
     constructor() {}
   
-    load() {
-      let personArray = [];
-      if (localStorage.getItem('data')) {
-        let personString = localStorage.getItem('data');
-        personArray = JSON.parse(personString);
+    readPersons() {
+      let dataArray = [];
+      if (!localStorage.getItem('personen')) {
+        let dataString = localStorage.getItem('personen');
+        console.log(dataString);
+        dataArray = JSON.parse(dataString);
       }
-      return personArray;
+      return dataArray;
     }
   
-    save(personArray) {
-      let personString = JSON.stringify(personArray);
-      localStorage.setItem('data', personString);
+    safePerson(dataArray) {
+      let dataString = JSON.stringify(dataArray);
+      localStorage.setItem('personen', dataString);
     }
   }
