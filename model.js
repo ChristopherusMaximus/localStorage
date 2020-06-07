@@ -1,30 +1,35 @@
 import { Person } from './person.js';
-import { DAO } from './dao.js';
 
 export class Model {
   constructor() {
-    this.dao = new DAO();
-    this.personen = this.dao.readPersons();
+    this.personList = [
+      { name: 'Anna Arm', birthday: '2001-12-24', tshirt: 'S' },
+      { name: 'Berta Bein', birthday: '1993-07-12', tshirt: 'L' },
+      { name: 'Carla Copf', birthday: '1980-03-07', tshirt: 'XL' }
+    ];
   }
 
-  //      Create
-  createPerson(person) {
-    this.personen.push(person);
-    this.dao.safePerson(this.person);
+  // CREATE
+  addPerson(person) {
+    this.personList.push(person);
   }
 
-  //      Read  
-  readAllPersons() {
-    return this.personen;
+  // READ
+  getAllPersons() {
+    return this.personList;
   }
 
-  //      Update
-
-  //      Delete
-  deletePerson(index){
-    this.personen.splice(index,1);
-    this.dao.safePerson(this.personen);
+  getPerson(index) {
+    return this.personList[index];
   }
 
-  
+  // UPDATE
+  updatePerson(index, newPerson) {
+    this.personList[index] = newPerson;
+  }
+
+  // DELETE
+  deletePerson(index) {
+    this.personList.splice(index, 1);
+  }
 }

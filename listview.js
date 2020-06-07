@@ -1,50 +1,53 @@
 export class ListView {
-  constructor(presenter) {
+  constructor(presenter, personList) {
     this.presenter = presenter;
-    this.app = document.getElementById('app');
-  }
 
-  render(personen) {       
-    let html =`
-    <h2>Liste aller Personen</h2>
-    <ul>`;
-    let index = 0;
-    let person;
-    personen.forEach(person => {
-        let vorname = person.vorname;
-        let nachname = person.nachname;
-        let geburtsdatum = person.geburtsdatum;
-        let corona = "nein";
-        let symptome = "";
-        if(person.corona == true){
-           corona = "ja";
-           symptome = `Symptome: ${person.symptome}`
-        }
-      html += `<li>Vorname: ${vorname} 
-      Nachname: ${nachname} 
-      Geburtsdatum: ${geburtsdatum} 
-      Corona-Infiziert: ${corona} `;
-      html += symptome;
-      html +=`<button class='delete' id="${index}">X</button></li>`;
-      index++;
-    });   
-    html += '</ul>';
-    html += '<button id="neu">Neue Person hinzufügen</button>';
+    // ---- HTML ----
+    let htmlTable = '<tr><th>Name</th><th>Birthday</th><th>T-Shirt-Größe</th><th></th><th></th></tr>';
+    for (let i = 0; i < personList.length; i++) {
+      const person = personList[i];
+      const htmlTr = `<tr>
+              <td>${person.name}</td>
+              <td>${person.birthday}</td>
+              <td>${person.tshirt}</td>
+              <td><button class="buttonUpdate">Update</button></td>
+              <td><button class="buttonDelete">Delete</button></td>
+          </tr>`;
+      htmlTable += htmlTr;
+    }
+
+    const html = `
+        <h2>ListView</h2>
+        <table>
+            ${htmlTable}
+        </table>
+        <button id="buttonNew">New</button>
+        `;
+    this.app = document.getElementById('app');
     this.app.innerHTML = html;
 
-    const button = document.getElementById('neu');
-    button.addEventListener("click", () =>{
+    // ---- Events for buttons ----
+    this._registerEvents();
+  }
+
+  _registerEvents() {
+    const buttonsUpdate = document.getElementsByClassName('buttonUpdate');
+    for (let i = 0; i < buttonsUpdate.length; i++) {
+      buttonsUpdate[i].addEventListener('click', () => {
+        this.presenter.buttonUpdateClicked(i);
+      });
+    }
+
+    const buttonsDelete = document.getElementsByClassName('buttonDelete');
+    for (let i = 0; i < buttonsDelete.length; i++) {
+      buttonsDelete[i].addEventListener('click', () => {
+        this.presenter.buttonDeleteClicked(i);
+      });
+    }
+
+    const buttonNew = document.getElementById('buttonNew');
+    buttonNew.addEventListener('click', () => {
       this.presenter.buttonNewClicked();
     });
-
-    const deleteButtons = document.getElementsByClassName('delete');
-    let deleteButtonsLength = deleteButtons.length;
-
-    for(let i = 0; i< deleteButtonsLength;i++){
-        deleteButtons[i].addEventListener("click", () =>{
-          this.presenter.buttonDeleteClicked(deleteButtons[i].id);
-        });
-      }     
-
-    }
+  }
 }
